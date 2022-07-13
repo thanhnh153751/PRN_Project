@@ -4,6 +4,30 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Project_ASP.NET_ShoppingOnline.Models;
+@section styles{
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+            .pagination a {
+                color: black;
+                font-size: 22px;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+            }
+
+                .pagination a.active {
+                    background-color: #ee3e0f;
+                    color: black;
+                }
+
+                .pagination a:hover:not(.active) {
+                    background-color: #ee3e0f;
+                }
+    </style>
+}
 
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -63,17 +87,17 @@
             </div>
 
             @*<script type="text/javascript">
-                function buypn(id) {
-                    console.log('????????????????');
-                    document.fpn.action = "buy?id=" + id + "&num=" + 1;
-                    document.fpn.submit();
+                    function buypn(id) {
+                        console.log('????????????????');
+                        document.fpn.action = "buy?id=" + id + "&num=" + 1;
+                        document.fpn.submit();
 
-                }
-                function buynow(id) {
-                    document.fpn.action = "buy?id=" + id + "&num=" + 1 + "&now=1";
-                    document.fpn.submit();
-                }
-            </script>*@
+                    }
+                    function buynow(id) {
+                        document.fpn.action = "buy?id=" + id + "&num=" + 1 + "&now=1";
+                        document.fpn.submit();
+                    }
+                </script>*@
         </div>
 
 
@@ -98,18 +122,18 @@
 
                     @*<c:set var="cid" value="${requestScope.cid}" />
 
-                        <form id="f" action="list">
-                            <ul class="categiri" onchange="document.getElementById('f').submit()">
-                                <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
-                                <c:forEach items="${requestScope.category}" var="c">
+                            <form id="f" action="list">
+                                <ul class="categiri" onchange="document.getElementById('f').submit()">
+                                    <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
+                                    <c:forEach items="${requestScope.category}" var="c">
 
-                                    <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
+                                        <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
 
-                                </c:forEach>
+                                    </c:forEach>
 
 
-                            </ul>
-                    </form>*@
+                                </ul>
+                        </form>*@
 
                 </div>
             </div>
@@ -130,9 +154,11 @@
         </div>
         <!-- end all shoes -->
         <!--phần phân trang-->
-        <div class="pagination">
-            <input id="page" type="hidden" value="1" />
-            @if (ViewBag.Page > 1)
+        <input id="page" type="hidden" value="1" />
+
+        <div class="pagination" id="paginationP">
+
+            @*@if (ViewBag.Page > 1)
             {
                 <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder, page = ViewBag.Page - 1 })" class="btn btn-default"> &laquo; Prev </a>
             }
@@ -145,7 +171,7 @@
             @if (ViewBag.Page < ViewBag.MaxPage + 1)
             {
                 <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder,page = ViewBag.Page + 1 })" class="btn btn-default">Next &raquo;</a>
-            }
+            }*@
 
         </div>
 
@@ -161,16 +187,23 @@
             let curent = $("input[id='curentId']").attr('value');
             if (curent == null) curent = 0;
             localStorage.setItem("curId", $('#curentId').val());
+
             
+            localStorage.setItem("page", $("input[id='page']").attr('value'));
         }
 
         $(document).ready(function () {//load ra các product theo category first truy cập
             //dùng curent index
-            
+
             //let curent = $("input[id='curentId']").attr('value');
             let curId = localStorage.getItem('curId');
-          
+            $("input[id='curentId']").val("" + curId + "");
 
+
+            let pageN = localStorage.getItem('page');
+            $("input[id='page']").val("" + pageN + "");
+
+            //khi f5 vẫn giữ lại các tùy chọn
             loadProduct(curId);
             Array.from(document.getElementsByClassName("cateid")).forEach(
                 function (element, index, array) {
@@ -183,16 +216,24 @@
                 }
             );
 
+            
+
+
 
         });
 
+
+
         function loadProduct(cid) {
+            let npage = $("input[id='page']").attr('value');
+            
             $.ajax({
                 url: "/Product/GetProductByCategoryId",
                 type: "GET",
 
                 data: {
-                    id: cid
+                    id: cid,
+                    page: npage
                 },
                 dataType: "JSON",
                 contentType: 'application/json;charset=utf-8',
@@ -201,7 +242,7 @@
                     if (data.code == 666) {
                         $('#productHome').empty();
                         $.each(data.listProduct, function (k, v) {
-                            
+
                             let tr = '<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 margintop">';
                             tr += '<div class="shoes-box">';
                             tr += '<i><img src="' + v.image + '" /></i>';
@@ -217,6 +258,43 @@
 
                         });
 
+                        $('#paginationP').empty();
+                        let pa = '';
+                        
+                        if (data.page > 1) {
+                            
+                            pa += '<a class="btn btn-default "> &laquo; Prev </a>';
+                        }
+                        
+                        for (var i = 1; i <= data.maxpage + 1 ; i++)
+                        {
+                            
+                            pa += '<a  class=" ' + ((npage == i) ? "active" : "")+' " >' + i + '</a>';
+                        }
+                        if (data.page < data.maxpage+1) {
+                            pa += '<a class="btn btn-default ">Next &raquo;</a>';
+                        }
+                        $('#paginationP').append(pa);
+
+                        //lấy số page và cid
+                        $('#paginationP a').click(function () {
+                            let page = $(this).html();
+                            if (page.toString().includes('Next')) {
+                                page = parseInt($("input[id='page']").attr('value')) + 1;
+                                
+                            }
+                            if (page.toString().includes('Prev')) {
+                                page = parseInt($("input[id='page']").attr('value')) - 1;
+                                
+                            }
+                            $("input[id='page']").val("" + page + "");
+                            let curent = $("input[id='curentId']").attr('value');
+                            
+                            loadProduct(curent);
+                        });
+
+
+
                     } else {
 
                         alert(data.msg);
@@ -230,9 +308,14 @@
             });
         }
 
+
+        
+
+
+
         $('li.cateid').click(function () {//load ra các product theo category
             let id = $(this).attr('id');
-
+            $("input[id='page']").val("" + 1 + "");
             $("input[id='curentId']").val("" + id + "");
 
             loadProduct(id);
@@ -243,21 +326,21 @@
                     } else {
                         element.classList.remove("active");
                     }
-                    
+
                 }
             );
 
 
-            
-           
+
+
         });
 
-        
+
 
 
     </script>
 }
-      
+
 
 
 
