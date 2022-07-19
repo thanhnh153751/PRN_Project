@@ -29,6 +29,39 @@
     </style>
 }
 
+<div class="row">
+    <div class="col-md-12">
+        <div class="title">
+            <h2> Categories</h2>
+            <input id="curentId" type="hidden" value="0" />
+            <ul class="categiri">
+
+                <li id="0" class="cateid" onclick="loadProduct()"><a href="/Home/home2/0">ALL</a></li>
+                @foreach (Category category in ViewBag.Allcategories)
+                {
+                    <li id="@category.CategoryId" class="cateid"><a href="/Home/home2/@category.CategoryId">@category.CategoryName</a></li>
+                }
+            </ul>
+
+            @*<c:set var="cid" value="${requestScope.cid}" />
+
+                    <form id="f" action="list">
+                        <ul class="categiri" onchange="document.getElementById('f').submit()">
+                            <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
+                            <c:forEach items="${requestScope.category}" var="c">
+
+                                <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
+
+                            </c:forEach>
+
+
+                        </ul>
+                     </form>*@
+
+        </div>
+    </div>
+</div>
+
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -37,13 +70,13 @@
     </ol>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" src="images/baner_1.jpg" alt="First slide">
+            <img class="d-block w-100" src="~/images/baner_1.jpg" alt="First slide">
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="images/baner_2.jpg" alt="Second slide">
+            <img class="d-block w-100" src="~/images/baner_2.jpg" alt="Second slide">
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" src="images/baner_3.jpg" alt="Third slide">
+            <img class="d-block w-100" src="~/images/baner_3.jpg" alt="Third slide">
         </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -59,6 +92,10 @@
 <!-- Categories -->
 <div class="Categories">
     <div class="container">
+
+
+
+
 
         <!-- news shoes -->
         <div id="shoes" class="shoes-bg">
@@ -106,38 +143,7 @@
 
 
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="title">
-                    <h2> Categories</h2>
-                    <input id="curentId" type="hidden" value="0" />
-                    <ul class="categiri">
 
-                        <li id="0" class="cateid" onclick="loadProduct()"><a>ALL</a></li>
-                        @foreach (Category category in ViewBag.Allcategories)
-                        {
-                            <li id="@category.CategoryId" class="cateid"><a>@category.CategoryName</a></li>
-                        }
-                    </ul>
-
-                    @*<c:set var="cid" value="${requestScope.cid}" />
-
-                            <form id="f" action="list">
-                                <ul class="categiri" onchange="document.getElementById('f').submit()">
-                                    <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
-                                    <c:forEach items="${requestScope.category}" var="c">
-
-                                        <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
-
-                                    </c:forEach>
-
-
-                                </ul>
-                        </form>*@
-
-                </div>
-            </div>
-        </div>
 
 
 
@@ -159,19 +165,19 @@
         <div class="pagination" id="paginationP">
 
             @*@if (ViewBag.Page > 1)
-            {
-                <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder, page = ViewBag.Page - 1 })" class="btn btn-default"> &laquo; Prev </a>
-            }
+                {
+                    <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder, page = ViewBag.Page - 1 })" class="btn btn-default"> &laquo; Prev </a>
+                }
 
-            @for (var i = 1; i <= ViewBag.MaxPage + 1; i++)
-            {
-                <a class="@(ViewBag.Page == i?"active":"")" href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder, page = i})">@i</a>
-            }
+                @for (var i = 1; i <= ViewBag.MaxPage + 1; i++)
+                {
+                    <a class="@(ViewBag.Page == i?"active":"")" href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder, page = i})">@i</a>
+                }
 
-            @if (ViewBag.Page < ViewBag.MaxPage + 1)
-            {
-                <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder,page = ViewBag.Page + 1 })" class="btn btn-default">Next &raquo;</a>
-            }*@
+                @if (ViewBag.Page < ViewBag.MaxPage + 1)
+                {
+                    <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder,page = ViewBag.Page + 1 })" class="btn btn-default">Next &raquo;</a>
+                }*@
 
         </div>
 
@@ -188,7 +194,7 @@
             if (curent == null) curent = 0;
             localStorage.setItem("curId", $('#curentId').val());
 
-            
+
             localStorage.setItem("page", $("input[id='page']").attr('value'));
         }
 
@@ -216,7 +222,7 @@
                 }
             );
 
-            
+
 
 
 
@@ -226,7 +232,7 @@
 
         function loadProduct(cid) {
             let npage = $("input[id='page']").attr('value');
-            
+
             $.ajax({
                 url: "/Product/GetProductByCategoryId",
                 type: "GET",
@@ -260,18 +266,17 @@
 
                         $('#paginationP').empty();
                         let pa = '';
-                        
+
                         if (data.page > 1) {
-                            
+
                             pa += '<a class="btn btn-default "> &laquo; Prev </a>';
                         }
-                        
-                        for (var i = 1; i <= data.maxpage + 1 ; i++)
-                        {
-                            
-                            pa += '<a  class=" ' + ((npage == i) ? "active" : "")+' " >' + i + '</a>';
+
+                        for (var i = 1; i <= data.maxpage + 1; i++) {
+
+                            pa += '<a  class=" ' + ((npage == i) ? "active" : "") + ' " >' + i + '</a>';
                         }
-                        if (data.page < data.maxpage+1) {
+                        if (data.page < data.maxpage + 1) {
                             pa += '<a class="btn btn-default ">Next &raquo;</a>';
                         }
                         $('#paginationP').append(pa);
@@ -281,15 +286,15 @@
                             let page = $(this).html();
                             if (page.toString().includes('Next')) {
                                 page = parseInt($("input[id='page']").attr('value')) + 1;
-                                
+
                             }
                             if (page.toString().includes('Prev')) {
                                 page = parseInt($("input[id='page']").attr('value')) - 1;
-                                
+
                             }
                             $("input[id='page']").val("" + page + "");
                             let curent = $("input[id='curentId']").attr('value');
-                            
+
                             loadProduct(curent);
                         });
 
@@ -309,7 +314,7 @@
         }
 
 
-        
+
 
 
 

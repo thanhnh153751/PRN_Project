@@ -17,7 +17,7 @@ namespace Project_ASP.NET_ShoppingOnline
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -30,7 +30,7 @@ namespace Project_ASP.NET_ShoppingOnline
             }
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
@@ -41,6 +41,7 @@ namespace Project_ASP.NET_ShoppingOnline
                     name: "getSTwithId",
                     pattern: "{controller}/{action}/{id=0}"
                     );
+                
             });
         }
     }

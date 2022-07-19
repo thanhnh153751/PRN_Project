@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Home2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Project_ASP.NET_ShoppingOnline.Models;
+@model List<Product>
+@section styles{
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+            .pagination a {
+                color: black;
+                font-size: 22px;
+                float: left;
+                padding: 8px 16px;
+                text-decoration: none;
+            }
+
+                .pagination a.active {
+                    background-color: #ee3e0f;
+                    color: black;
+                }
+
+                .pagination a:hover:not(.active) {
+                    background-color: #ee3e0f;
+                }
+    </style>
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="title">
+            <h2> Categories</h2>
+            <input id="curentId" type="hidden" value="0" />
+            <ul class="categiri">
+
+                <li id="0" class="cateid @(ViewBag.CurenCid==0?"active":"")" onclick="loadProduct()"><a href="/Home/home2/0">ALL</a></li>
+                @foreach (Category category in ViewBag.Allcategories)
+                {
+                    <li id="@category.CategoryId" class="cateid @(ViewBag.CurenCid==category.CategoryId?"active":"")"><a href="/Home/home2/@category.CategoryId">@category.CategoryName</a></li>
+                }
+            </ul>
+
+            @*<c:set var="cid" value="${requestScope.cid}" />
+
+                    <form id="f" action="list">
+                        <ul class="categiri" onchange="document.getElementById('f').submit()">
+                            <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
+                            <c:forEach items="${requestScope.category}" var="c">
+
+                                <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
+
+                            </c:forEach>
+
+
+                        </ul>
+                </form>*@
+
+        </div>
+    </div>
+</div>
+
+<!-- Categories -->
+<div class="Categories">
+    <div class="container">
+
+
+
+
+        <!-- all shoes -->
+        <div id="shoes" class="shoes-bg">
+            <h3>
+            </h3>
+            <div class="row" id="productHome">
+                @foreach (Product product in Model)
+                {
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 margintop">
+                        <div class="shoes-box">
+
+                            <i><img src="~/@product.Image" /></i>
+                            <p><span class="nolmal">@product.ProductName</span></p>
+                            <h4>Price: <span class="nolmal monney" style="color: red">@product.UnitPrice</span>đ<br /><span style="font-size: 70%;">kho:@product.UnitsInStock</span></h4>
+
+                        </div>
+                        <div style="display: flex;">
+                            <a class="buynow" onclick="buynow()">Buy now</a>
+                            <a class="buynow" onclick="buy()">Add to cart</a>
+
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+        </div>
+        <!-- end all shoes -->
+        <!--phần phân trang-->
+        <input id="page" type="hidden" value="1" />
+
+        <div class="pagination" id="paginationP">
+
+            @if (ViewBag.Page > 1)
+            {
+                <a href="@Url.Action("Home2","Home", new {id = ViewBag.CurenCid, page = ViewBag.Page - 1 })" class="btn btn-default"> &laquo; Prev </a>
+            }
+
+            @for (var i = 1; i <= ViewBag.MaxPage + 1; i++)
+            {
+                <a class="@(ViewBag.Page == i?"active":"")" href="@Url.Action("Home2","Home", new {id = ViewBag.CurenCid, page = i})">@i</a>
+            }
+
+            @if (ViewBag.Page < ViewBag.MaxPage + 1)
+            {
+                <a href="@Url.Action("Home2","Home", new {id = ViewBag.CurenCid,page = ViewBag.Page + 1 })" class="btn btn-default">Next &raquo;</a>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+

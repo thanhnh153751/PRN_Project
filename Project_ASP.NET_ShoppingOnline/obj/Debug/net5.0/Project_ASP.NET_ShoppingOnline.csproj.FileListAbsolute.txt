@@ -138,3 +138,6 @@ E:\Project_PRN\Project_ASP.NET_ShoppingOnline\bin\Debug\net5.0\zh-Hant\Microsoft
 E:\Project_PRN\Project_ASP.NET_ShoppingOnline\bin\Debug\net5.0\runtimes\win-arm\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 E:\Project_PRN\Project_ASP.NET_ShoppingOnline\bin\Debug\net5.0\runtimes\win-arm64\lib\net5.0\dotnet-aspnet-codegenerator-design.exe
 E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Home\Home.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\bin\Debug\net5.0\bundleconfig.json
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Home\Home2.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
