@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Project_ASP.NET_ShoppingOnline.Models;
+@using Newtonsoft.Json
 @section styles{
     <style>
         .pagination {
@@ -30,6 +31,9 @@
 }
 
 <div class="row">
+
+   
+
     <div class="col-md-12">
         <div class="title">
             <h2> Categories</h2>
@@ -45,18 +49,18 @@
 
             @*<c:set var="cid" value="${requestScope.cid}" />
 
-                    <form id="f" action="list">
-                        <ul class="categiri" onchange="document.getElementById('f').submit()">
-                            <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
-                            <c:forEach items="${requestScope.category}" var="c">
+                <form id="f" action="list">
+                    <ul class="categiri" onchange="document.getElementById('f').submit()">
+                        <li <c:if test="${cid==0}">class="active"</c:if> ><a href="home?cid=0">ALL</a></li>
+                        <c:forEach items="${requestScope.category}" var="c">
 
-                                <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
+                            <li <c:if test="${c.categoryID==cid}">class="active"</c:if>   ><a href="home?cid=${c.categoryID}">${c.categoryName}</a></li>
 
-                            </c:forEach>
+                        </c:forEach>
 
 
-                        </ul>
-                     </form>*@
+                    </ul>
+                 </form>*@
 
         </div>
     </div>
@@ -113,8 +117,9 @@
                             <h4>Price: <span class="nolmal monney" style="color: red">@product.UnitPrice</span>đ <br /><span style="font-size: 70%;">kho:@product.UnitsInStock</span></h4>
                         </div>
                         <div style="display: flex;">
-                            <a class="buynow" onclick="buynow('${p.productID}')">Buy now</a>
-                            <a class="buynow" onclick="buypn('${p.productID}')">Add to cart</a>
+                            <a class="buynow" name="buynow" onclick="buynow()">Buy now</a>
+                            <input class="getPid" type="hidden" value="@product.ProductId" />
+                            <a class="buynow" name="addtocard" onclick="buy()">Add to cart</a>
 
                         </div>
 
@@ -123,18 +128,40 @@
                 }
             </div>
 
-            @*<script type="text/javascript">
-                    function buypn(id) {
-                        console.log('????????????????');
-                        document.fpn.action = "buy?id=" + id + "&num=" + 1;
-                        document.fpn.submit();
 
-                    }
-                    function buynow(id) {
-                        document.fpn.action = "buy?id=" + id + "&num=" + 1 + "&now=1";
-                        document.fpn.submit();
-                    }
-                </script>*@
+        </div>
+
+        <div id="shoes" class="shoes-bg">
+            <h3>MostView shoes</h3>
+            <div class="row">
+                @*@{
+                    var topView = ViewBag.TopViewProducts;
+
+                                
+                    @foreach (var product in topView as dynamic)
+                        {
+
+                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 ">
+                                <div class="shoes-box">
+
+                                    <i><img src="~/@product.Pro.Image" /></i>
+
+                                    <p class="nolmal">@product.Pro.ProductName</p>
+                                    <h4>Price: <span class="nolmal monney" style="color: red">@product.Pro.UnitPrice</span>đ <br /><span style="font-size: 70%;">kho:@product.Pro.UnitsInStock</span></h4>
+                                </div>
+                                <div style="display: flex;">
+                                    <a class="buynow" onclick="buynow('${p.productID}')">Buy now</a>
+                                    <a class="buynow" onclick="buypn('${p.productID}')">Add to cart</a>
+
+                                </div>
+
+                            </div>
+
+                        }
+                }*@
+            </div>
+
+
         </div>
 
 
@@ -150,19 +177,19 @@
 
 
         <!-- all shoes -->
-        <div id="shoes" class="shoes-bg">
-            <h3>
-            </h3>
-            <div class="row" id="productHome">
+        @*<div id="shoes" class="shoes-bg">
+                <h3>
+                </h3>
+                <div class="row" id="productHome">
 
-            </div>
+                </div>
 
-        </div>
+            </div>*@
         <!-- end all shoes -->
         <!--phần phân trang-->
-        <input id="page" type="hidden" value="1" />
+        <!--<input id="page" type="hidden" value="1" />
 
-        <div class="pagination" id="paginationP">
+        <div class="pagination" id="paginationP">-->
 
             @*@if (ViewBag.Page > 1)
                 {
@@ -179,7 +206,7 @@
                     <a href="@Url.Action("listProduct","Product", new {id = ViewBag.CurOrder,page = ViewBag.Page + 1 })" class="btn btn-default">Next &raquo;</a>
                 }*@
 
-        </div>
+        <!--</div>-->
 
     </div>
 
@@ -188,6 +215,8 @@
 
 
 @section script{
+    <script src="~/js/order.js"></script>
+
     <script type="text/javascript">
         window.onbeforeunload = function () {
             let curent = $("input[id='curentId']").attr('value');

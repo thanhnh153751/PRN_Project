@@ -7,7 +7,7 @@ namespace Project_ASP.NET_ShoppingOnline.Models
 {
     public partial class ViewProduct
     {
-        public int? ProductId { get; set; }
+        public int ProductId { get; set; }
         public int? View { get; set; }
         public DateTime? Viewdate { get; set; }
 

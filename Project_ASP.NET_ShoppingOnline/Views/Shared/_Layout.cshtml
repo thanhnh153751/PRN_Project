@@ -71,9 +71,9 @@
                                 <div class="right_header_info">
 
                                     <ul class="form-bar-m1">
-                                        <form action="home2" id="search-bar">
+                                        <form action="/home/home2" id="search-bar" method="post">
                                         <li class="menu_iconb">
-                                            <input style="margin-right: 15px;" class="tetter" placeholder="Search" type="text" name="name">
+                                            <input style="margin-right: 15px;" class="tetter" placeholder="Search" type="text" name="key" value="@ViewBag.Key">
                                         </li>
 
                                         <li class="menu_iconb">
@@ -88,13 +88,17 @@
                                         }
                                         else
                                         {
+
                                             <li class="menu_iconb">
                                                 <a href="/Account/logout" onclick="doLogout()">Log out <img style="margin-right: 15px;" src="~/images/5.png" alt="#" />  </a>
+                                            </li>
+                                            <li class="menu_iconb">
+                                                <a href="customer_infor">@ViewBag.Customer.Username<img style="margin-left: 15px;" src="~/images/6.png" alt="#" /></a>
                                             </li>
                                         }
 
                                         <li class="tytyu">
-                                            <a href="showbag"> <img style="margin-right: 15px;" src="~/images/2.png" alt="#" /><span id="size_bag">number items</span></a>
+                                            <a href="/Order/ViewCart/@ViewBag.OderId"> <img style="margin-right: 15px;" src="~/images/2.png" alt="#" /><span id="numberItems">@ViewBag.sizeCart</span></a>
                                         </li>
 
 

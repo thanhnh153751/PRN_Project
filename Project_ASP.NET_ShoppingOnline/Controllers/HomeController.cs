@@ -24,19 +24,58 @@ namespace Project_ASP.NET_ShoppingOnline.Controllers
             ViewBag.Allcategories = allcategories;
             ViewBag.NewsProducts = newProducts;
 
+            var listProductMostView = productManager.GetTopViewProducts();
+            ViewBag.TopViewProducts = listProductMostView;
+
             string? json = HttpContext.Session.GetString("acc");
             Customer c = null;
             if (json != null) c = JsonConvert.DeserializeObject<Customer>(json);
             ViewBag.Customer = c;
 
+
+            OrderManager ordersManager = new OrderManager();
+            int si = 0;
+            int OderId = 0;
+            if (c != null)
+            {
+                //lấy size của giỏ hàng
+                si = ordersManager.getSizeOfCart(c);
+
+                //lấy OrderId từ account
+                if (ordersManager.getOrder(c) == null)
+                {
+                    OderId = 0;
+                }
+                else
+                {
+                    OderId = ordersManager.getOrder(c).OrderId;
+                }
+
+            }
+
+
+            ViewBag.OderId = OderId;
+            ViewBag.sizeCart = si;
+
             return View();
         }
 
-        public IActionResult Home2(int id, int page = 1)
+        public IActionResult Home2(int id, int page = 1 ,string key = null)
         {
             ProductManager productManager = new ProductManager();
             CategoryManager categoryManager = new CategoryManager();
-            List<Product> products = productManager.GetProductsByCategoryId(id);
+            List<Product> products;
+            if (key != null)
+            {
+                 products = productManager.GetProductsBySeachBox(key);
+                 ViewBag.Key = key;
+            }
+            else
+            {
+                products = productManager.GetProductsByCategoryId(id);
+            }
+             
+
             List<Category> allcategories = categoryManager.GetAllCategories();
             ViewBag.Allcategories = allcategories;
             ViewBag.Products = products;
@@ -47,6 +86,38 @@ namespace Project_ASP.NET_ShoppingOnline.Controllers
             Customer c = null;
             if (json != null) c = JsonConvert.DeserializeObject<Customer>(json);
             ViewBag.Customer = c;
+
+
+            
+            OrderManager ordersManager = new OrderManager();
+            int si=0;
+            int OderId=0;
+            if (c != null)
+            {
+                //lấy size của giỏ hàng
+                si = ordersManager.getSizeOfCart(c);
+
+                //lấy OrderId từ account
+                if (ordersManager.getOrder(c) == null)
+                {
+                    OderId = 0;
+                }
+                else
+                {
+                    OderId = ordersManager.getOrder(c).OrderId;
+                }
+
+            }
+             
+            
+
+            
+           
+            
+            
+            ViewBag.OderId = OderId;
+            ViewBag.sizeCart = si;
+
 
             const int PageSize = 8;
             var count = products.Count();

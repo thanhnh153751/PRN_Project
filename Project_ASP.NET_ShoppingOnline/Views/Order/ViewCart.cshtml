@@ -1,0 +1,270 @@
+﻿@using Project_ASP.NET_ShoppingOnline.Models;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model List<OrdersDetail>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .quantyti{
+            padding:0px 0px;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="pt-5 pb-5">
+        <div class="container">
+            <div class="row w-100">
+                <div class="col-lg-12 col-md-12 col-12">
+                    <h3 class="display-5 mb-2 text-center">Shopping Cart</h3>
+                    <p class="mb-5 text-center">
+                        <i class="text-info font-weight-bold">@Model.Count</i> items in your cart
+                    </p>
+                    <table id="shoppingCart" class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width:60%">Product</th>
+                                <th style="width:12%">Price</th>
+                                <th style="width:14%">Quantity</th>
+                                <th style="width:16%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (OrdersDetail od in Model)
+                            {
+
+                                <tr id="@od.ProductId">
+
+                                    <td data-th="Product">
+                                        <div class="row">
+                                            <div class="col-md-3 text-left">
+                                                <img src="~/@od.Product.Image" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                            </div>
+                                            <div class="col-md-9 text-left mt-sm-2">
+                                                <h4>@od.Product.ProductName</h4>
+                                                @* <p class="font-weight-light">Brand &amp; Name</p>*@
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td data-th="Price" id="@od.UnitPrice" name="price">@od.UnitPrice</td>
+
+                                    <td data-th="Quantity" id="@od.Quantity" name="quantity">
+                                        <div class="input-group">
+
+                                            <input type="hidden" name="odid" value="@od.OrderId">
+                                            <span class="input-group-prepend">
+                                                <button name="quan" value="0" type="button" class="btn btn-sm btn-danger btn-number" data-type="minus" data-field="quant[1]">
+                                                    <span class="fa fa-minus"></span>
+                                                </button>
+                                            </span>
+
+                                            <input id="@od.ProductId" type="number" readonly class="form-control form-control-lg text-center quantyti" value="@od.Quantity">
+
+                                            <span class="input-group-append">
+                                                <button name="quan" value="1" type="button" class="btn btn-sm btn-success btn-number" data-type="plus" data-field="quant[1]">
+                                                    <span class="fa fa-plus"></span>
+                                                </button>
+                                            </span>
+
+                                        </div>
+                                    </td>
+
+                                    <td class="actions" data-th="">
+                                        <div class="text-right">
+
+                                            <button name="remove" class="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+
+                            }
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <div class="float-right text-right">
+                        <h4>Subtotal:</h4>
+                        @{
+                            decimal total = 0;
+                            if (@Model.Count == 0) total = 0;
+                            else
+                            {
+                                @foreach (OrdersDetail od in Model)
+                                {
+                                    total += (od.UnitPrice * od.Quantity);
+                                }
+                            }
+
+                        }
+                        <h1 id="bill">@total</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 d-flex align-items-center">
+                <div class="col-sm-6 order-md-2 text-right">
+                    @*href="/Orders/CheckOut/@ViewBag.OderId mặc định đã không cho + quá số hàng trong kho rùi*@
+                    <a " name="checkout" class="btn btn-primary mb-4 btn-lg pl-5 pr-5">Checkout</a>
+                </div>
+                <div class="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
+                    <a href="/Home/Home2/0">
+                        <i class="fas fa-arrow-left mr-2"></i> Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/e4af917b8e.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+        $(document).on('click', "button[name='quan']", function () {//tăng giảm số lượng
+            let idrow = $(this).closest('tr').attr('id');//productId
+
+            let varow = $(this).closest('button').attr('value');//+ or -
+
+            let odid = $("input[name='odid']").attr('value');//orderid
+
+            let bill = $("h1[id='bill']").html();//tạm tính tổng tiền
+
+            let price = $(this).closest('tr').find("td[name='price']").attr('id');//giá của product đó
+
+            let x = $("input[id='" + idrow + "']").val();//quantity trc khi change
+
+
+            //alert(idrow +' ' + varow+'  '+odid +'   '+ price+'  '+bill);
+            $.ajax({
+                url: "/Order/SetNumberQuantity",
+                type: "GET",
+
+                data: {
+                    idOrder: odid,
+                    idP: idrow,
+                    status: varow
+                },
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    if (data.code == 666) {
+                        //  alert(data.msg + '  ' + data.newquan );
+                        
+                        $("input[id='" + idrow + "']").val("" + data.newquan + "");
+                        
+                        
+                        //tinh lai tien
+                        if (varow == 0) {
+                            if(x != 1)
+                            bill = parseFloat(bill) - parseFloat(price);
+                        } else {
+                            if (x != data.maxquan)
+                            bill = parseFloat(bill) + parseFloat(price);
+
+                        }
+                        document.getElementById("bill").innerHTML = bill;
+
+                    } else {
+                        alert(data.msg);
+                    }
+
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            })
+        });
+
+        $(document).on('click', "button[name='remove']", function () {//xóa product
+            let idrow = $(this).closest('tr').attr('id');
+            let price = $(this).closest('tr').find("td[name='price']").attr('id');
+            let quantity = $(this).closest('tr').find("td[name='quantity']").attr('id');
+            let odid = $("input[name='odid']").attr('value');
+            //alert(idrow +'  '+price+'   '+quantity+'    '+odid);
+            $.ajax({
+                url: "/Order/DeleteItem",
+                type: "GET",
+
+                data: {
+                    idOrder: odid,
+                    idP: idrow,
+
+                },
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    if (data.code == 666) {
+                        location.reload();
+                        //tạm thế
+                    } else {
+                        alert(data.msg);
+                    }
+
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            })
+
+
+
+        });
+
+
+        //xử lí checkout
+        $(document).on('click', "a[name='checkout']", function () {
+            let odid = $("input[name='odid']").attr('value');
+            let bill = $("h1[id='bill']").html();
+            // alert(odid);
+
+
+            $.ajax({
+                url: "/Order/CheckValidationCart",
+                type: "GET",
+
+                data: {
+                    idOrder: odid,
+                    
+                },
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    if (data.code == 666) {
+                        location.href = '/Order/CheckOut/' + odid+'/'+bill+'';
+
+                    } else {
+                        alert(data.msg + '\nkiểm tra sô lượng đã vượt quá trong kho\hoặc giỏ hàng rỗng');
+                    }
+
+                },
+                error: function (error) {
+                    alert('error');
+                }
+            })
+
+
+
+        });
+    </script>
+</body>
+</html>

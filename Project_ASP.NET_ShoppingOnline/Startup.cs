@@ -39,9 +39,14 @@ namespace Project_ASP.NET_ShoppingOnline
                     );
                 endpoints.MapControllerRoute(
                     name: "getSTwithId",
+                    pattern: "order/checkout/{id=0}/{bill}",
+                    new { controller = "order", action = "checkout" }
+                    );
+                endpoints.MapControllerRoute(
+                    name: "getSTwithId",
                     pattern: "{controller}/{action}/{id=0}"
                     );
-                
+
             });
         }
     }

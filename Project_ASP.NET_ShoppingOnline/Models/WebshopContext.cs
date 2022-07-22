@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
@@ -31,8 +30,8 @@ namespace Project_ASP.NET_ShoppingOnline.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-                optionsBuilder.UseSqlServer(config.GetConnectionString("ApConStr"));
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("server=LAPTOP-6RP0SJQC;database=Webshop;user=sa;password=123456");
             }
         }
 
@@ -53,9 +52,7 @@ namespace Project_ASP.NET_ShoppingOnline.Models
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.Property(e => e.CustomerId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("CustomerID");
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
 
                 entity.Property(e => e.Address)
                     .IsRequired()
@@ -143,9 +140,7 @@ namespace Project_ASP.NET_ShoppingOnline.Models
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.ProductId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ProductID");
+                entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
 
@@ -173,8 +168,6 @@ namespace Project_ASP.NET_ShoppingOnline.Models
 
                 entity.ToTable("Role Account");
 
-                entity.Property(e => e.Role).ValueGeneratedNever();
-
                 entity.Property(e => e.Rolename)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -182,9 +175,7 @@ namespace Project_ASP.NET_ShoppingOnline.Models
 
             modelBuilder.Entity<Shipper>(entity =>
             {
-                entity.Property(e => e.ShipperId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ShipperID");
+                entity.Property(e => e.ShipperId).HasColumnName("ShipperID");
 
                 entity.Property(e => e.CompanyName)
                     .IsRequired()
@@ -201,7 +192,9 @@ namespace Project_ASP.NET_ShoppingOnline.Models
 
                 entity.ToTable("ViewProduct");
 
-                entity.Property(e => e.ProductId).HasColumnName("ProductID");
+                entity.Property(e => e.ProductId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("ProductID");
 
                 entity.Property(e => e.View).HasColumnName("view");
 
@@ -212,6 +205,7 @@ namespace Project_ASP.NET_ShoppingOnline.Models
                 entity.HasOne(d => d.Product)
                     .WithMany()
                     .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__ViewProdu__Produ__17036CC0");
             });
 
