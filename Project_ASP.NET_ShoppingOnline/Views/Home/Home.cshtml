@@ -133,7 +133,7 @@
 
         <div id="shoes" class="shoes-bg">
             <h3>MostView shoes</h3>
-            <div class="row">
+            <div class="row" id="productmostview">
                 @*@{
                     var topView = ViewBag.TopViewProducts;
 
@@ -231,16 +231,16 @@
             //dùng curent index
 
             //let curent = $("input[id='curentId']").attr('value');
-            let curId = localStorage.getItem('curId');
-            $("input[id='curentId']").val("" + curId + "");
+           // let curId = localStorage.getItem('curId');
+           // $("input[id='curentId']").val("" + curId + "");
 
 
-            let pageN = localStorage.getItem('page');
-            $("input[id='page']").val("" + pageN + "");
+            //let pageN = localStorage.getItem('page');
+            //$("input[id='page']").val("" + pageN + "");
 
             //khi f5 vẫn giữ lại các tùy chọn
-            loadProduct(curId);
-            Array.from(document.getElementsByClassName("cateid")).forEach(
+            //loadProduct(curId);
+            @*Array.from(document.getElementsByClassName("cateid")).forEach(
                 function (element, index, array) {
                     if (element.id == curId) {
                         element.classList.add("active");
@@ -249,13 +249,61 @@
                     }
 
                 }
-            );
+            );*@
 
-
+            ListProductMostView();
 
 
 
         });
+
+
+
+        function ListProductMostView() {
+
+            $.ajax({
+                url: "/Home/ListProductMostView",
+                type: "GET",
+
+                data: {
+                    
+                },
+                dataType: "JSON",
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 666) {
+                        
+                        $('#productmostview').empty();
+                        $.each(data.proMostView, function (k, v) {
+                            
+                            let tr = '<div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 margintop">';
+                            tr += '<div class="shoes-box">';
+                            tr += '<i><img src="/' + v.pro.image + '" /></i>';
+                            tr += '<p><span class="nolmal">' + v.pro.productName + '</span></p>';
+                            tr += '<h4>Price: <span class="nolmal monney" style="color: red">' + v.pro.unitPrice + '</span>đ <br/><span style="font-size: 70%;">kho:' + v.pro.unitsInStock + '</span></h4>';
+                            tr += '</div>';
+                            tr += '<div style="display: flex;">';
+                            tr += '<a class="buynow" onclick="buynow()">Buy now</a>';
+                            tr += '<a class="buynow" onclick="buypn()" >Add to cart</a>';
+                            tr += '</div> ';
+
+                            $('#productmostview').append(tr);
+
+                        });
+
+                    } else {
+
+                        // alert(data.msg);
+                    }
+
+                },
+                error: function (error) {
+
+                    //alert('error');
+                }
+            });
+        }
 
 
 
@@ -331,13 +379,13 @@
 
                     } else {
 
-                        alert(data.msg);
+                       // alert(data.msg);
                     }
 
                 },
                 error: function (error) {
 
-                    alert('error');
+                    //alert('error');
                 }
             });
         }
@@ -347,7 +395,7 @@
 
 
 
-        $('li.cateid').click(function () {//load ra các product theo category
+        @*$('li.cateid').click(function () {//load ra các product theo category
             let id = $(this).attr('id');
             $("input[id='page']").val("" + 1 + "");
             $("input[id='curentId']").val("" + id + "");
@@ -367,7 +415,7 @@
 
 
 
-        });
+        });*@
 
 
 

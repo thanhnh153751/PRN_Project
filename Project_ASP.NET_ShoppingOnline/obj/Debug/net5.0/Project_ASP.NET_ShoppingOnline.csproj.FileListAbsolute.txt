@@ -143,3 +143,8 @@ E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Home\
 E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
 E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Order\ViewCart.cshtml.g.cs
 E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Order\CheckOut.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Product\ListProductManager.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Product\addNewProduct.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Product\editProduct.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Account\listAccountManager.cshtml.g.cs
+E:\Project_PRN\Project_ASP.NET_ShoppingOnline\obj\Debug\net5.0\Razor\Views\Account\listOrderByAccountByCid.cshtml.g.cs

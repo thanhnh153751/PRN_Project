@@ -15,12 +15,13 @@ namespace Project_ASP.NET_ShoppingOnline.Logics
         }
         public List<Product> GetNewsProducts()
         {
-            return context.Products.OrderByDescending(x => x.ProductId).Take(4).ToList();
+            return context.Products.Where(x => x.Status.Value == true).OrderByDescending(x => x.ProductId).Take(4).ToList();
         }
 
         internal Product GetProductById(int idP)
         {
-            return context.Products.Where(x => x.ProductId == idP).FirstOrDefault();
+            context.Categories.ToList();
+            return context.Products.Where(x => x.ProductId == idP && x.Status.Value == true).FirstOrDefault();
         }
 
         public List<Product> GetBestSellerProducts()
@@ -71,8 +72,12 @@ namespace Project_ASP.NET_ShoppingOnline.Logics
 
         public List<Product> GetProductsByCategoryId(int id)
         {
-            if(id == 0) return context.Products.ToList();
-            else return context.Products.Where(x => x.CategoryId == id).ToList();
+            if (id == 0)
+            {
+                context.Categories.ToList();
+                return context.Products.Where(x=>x.Status.Value==true).ToList();
+            }
+            else return context.Products.Where(x => x.CategoryId == id && x.Status.Value == true).ToList();
         }
 
         public List<Product> GetProductsBySeachBox(string key)
@@ -88,8 +93,34 @@ namespace Project_ASP.NET_ShoppingOnline.Logics
             //{
             //    ids.Add(id);
             //}
-            var resou = context.Products.Where(x => cid.Contains(x.CategoryId)).ToList();
+            var resou = context.Products.Where(x => cid.Contains(x.CategoryId) && x.Status.Value == true).ToList();
             return null;
+        }
+
+        public void addNewProduct(Product p)
+        {
+            context.Categories.ToList();
+            context.Products.Add(p);
+            context.SaveChanges();
+        }
+
+        public void EditProduct(Product p)
+        {
+            context.Categories.ToList();
+            context.Products.Update(p);
+            context.SaveChanges();
+        }
+
+        public int getNewIdProduct()
+        {
+            return context.Products.Select(x => x.ProductId).Max();
+        }
+
+        public void deleteProduct(Product p)
+        {
+            p.Status = false;
+            context.Products.Update(p);
+            context.SaveChanges();
         }
 
 

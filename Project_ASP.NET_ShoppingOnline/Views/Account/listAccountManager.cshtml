@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "listAccountManager";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Project_ASP.NET_ShoppingOnline.Models;
+@model List<Customer>
+@section styles{
+    <style>
+        table {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        tbody, td, tfoot, th, thead, tr {
+            border-width: 1px;
+        }
+
+        button a {
+            text-decoration: none;
+        }
+    </style>
+}
+<h1 style="text-align: center">Manager Customer</h1>
+<table border="1px">
+    <tr>
+        <th>CustomerID</th>
+        <th>ContactName</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Username</th>
+     
+        <th>image</th>
+        <th>status</th>
+        <th>Action</th>
+    </tr>
+    @foreach(Customer customers in Model)
+    {
+        
+            <tr>
+                <td>@customers.CustomerId</td>
+                <td>@customers.ContactName</td>
+                <td>@customers.Address</td>
+                <td>@customers.Phone</td>
+                <td>@customers.Username</td>
+                
+                <td><img style="width: 80px;height: 80px;" src="~/@customers.Image" /></td>
+                <td>
+                    @if (customers.Status == 1)
+                {
+                    <img style="width: 20px;height: 20px;" src="~/images/green.png" />
+                }
+                    else{
+                        <img style="width: 20px;height: 20px;" src="~/images/red.png" />
+                        }
+                            
+                </td>
+
+
+                <td>
+                    <a href=""><button type="button">Block</button></a>
+                    <a href="/Account/listOrderByAccountByCid/@customers.CustomerId"><button type="button">View Order</button></a>
+                </td>
+
+            </tr>
+        
+    }
+
+    </table>
+<br />
+<br />
+<br />
+<br />
+<br />
+

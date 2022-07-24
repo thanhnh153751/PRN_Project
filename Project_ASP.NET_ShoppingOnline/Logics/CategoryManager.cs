@@ -15,5 +15,11 @@ namespace Project_ASP.NET_ShoppingOnline.Logics
         {
             return context.Categories.ToList();
         }
+        public Product GetAllCategoriesProduct(Product p)
+        {
+            context.Categories.ToList();
+            
+            return context.Products.FirstOrDefault(x => x.ProductId == p.ProductId);
+        }
     }
 }

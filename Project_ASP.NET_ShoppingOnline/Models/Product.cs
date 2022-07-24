@@ -20,6 +20,7 @@ namespace Project_ASP.NET_ShoppingOnline.Models
         public int CategoryId { get; set; }
         public string Image { get; set; }
         public string Description { get; set; }
+        public bool? Status { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual ICollection<OrdersDetail> OrdersDetails { get; set; }

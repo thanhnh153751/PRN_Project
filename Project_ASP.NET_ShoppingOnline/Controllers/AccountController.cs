@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Project_ASP.NET_ShoppingOnline.Fiter;
 using Project_ASP.NET_ShoppingOnline.Logics;
 using Project_ASP.NET_ShoppingOnline.Models;
+using System.Collections.Generic;
 
 namespace Project_ASP.NET_ShoppingOnline.Controllers
 {
@@ -35,6 +37,22 @@ namespace Project_ASP.NET_ShoppingOnline.Controllers
             //string? json = HttpContext.Session.GetString("acc");
             HttpContext.Session.Remove("acc");
             return RedirectToAction("home", "Home");
+        }
+        [TypeFilter(typeof(fitercustom))]
+        public IActionResult listAccountManager()
+        {
+            CustomerManager customer = new CustomerManager();
+            List<Customer> list = customer.getListCustomManager();
+            return View(list);
+        }
+
+        public IActionResult listOrderByAccountByCid(int id)
+        {
+            CustomerManager customer = new CustomerManager();
+            List<Order> list = customer.getListOrderCustomByCusId(id);
+            List<OrdersDetail> listOrderDetail = customer.getListOrdersDetail();
+            ViewBag.orderDetail = listOrderDetail;
+            return View(list);
         }
 
     }

@@ -31,6 +31,7 @@ namespace Project_ASP.NET_ShoppingOnline
 
             app.UseRouting();
             app.UseSession();
+            app.UseStaticFiles();//map vs wwwroot
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

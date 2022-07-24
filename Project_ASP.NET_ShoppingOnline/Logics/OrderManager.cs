@@ -129,9 +129,11 @@ namespace Project_ASP.NET_ShoppingOnline.Logics
 
         internal List<OrdersDetail> CheckOut(int idOrder,int bill)
         {
+            DateTime now = DateTime.Now;
             Order order = new Order();
             order = context.Orders.Where(x => x.OrderId == idOrder && x.Expired == true).FirstOrDefault();
             order.Expired = false;
+            order.OrderDate = now;
             order.Totalmoney = bill;
             context.Orders.Update(order);
 

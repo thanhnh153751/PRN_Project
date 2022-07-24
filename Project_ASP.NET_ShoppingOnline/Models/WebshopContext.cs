@@ -48,6 +48,8 @@ namespace Project_ASP.NET_ShoppingOnline.Models
                     .HasMaxLength(30);
 
                 entity.Property(e => e.Description).HasColumnType("ntext");
+
+                entity.Property(e => e.Status).HasColumnName("status");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -153,6 +155,8 @@ namespace Project_ASP.NET_ShoppingOnline.Models
                     .HasColumnName("image");
 
                 entity.Property(e => e.ProductName).HasMaxLength(100);
+
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)

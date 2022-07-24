@@ -1,0 +1,264 @@
+﻿
+@{
+    ViewData["Title"] = "editProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Project_ASP.NET_ShoppingOnline.Models;
+@model Product
+@section styles{
+    <style>
+        .infor {
+            text-align: center;
+        }
+
+        .image-upload > input {
+            display: none;
+        }
+
+        .upload-icon {
+            width: 221px;
+            height: 150px;
+            border: 2px solid #5642BE;
+            border-style: dotted;
+            border-radius: 18px;
+            float: left;
+        }
+
+
+            .upload-icon .icon {
+                width: 170px;
+                height: 110px;
+                margin: 19px;
+                cursor: pointer;
+            }
+
+        .prev {
+            display: none;
+            width: 95px;
+            height: 92px;
+            margin: 2px;
+            border-radius: 15px;
+        }
+    </style>
+}
+<h1 style="text-align: center">Edit Product</h1>
+
+@if (ViewBag.Mess != null)
+{
+
+    <h6 style="text-align: center;color:red ">@ViewBag.Mess </h6>
+}
+
+
+
+<form action="/Product/doeditProduct" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="@ViewBag.ePro.ProductId" />
+    <table style="margin: 0 auto;">
+
+        <tr>
+            <td>enter Product Name</td>
+            <td><input type="text" name="name" value="@ViewBag.ePro.ProductName" /></td>
+        </tr>
+        <tr>
+            <td>enter Unit Price</td>
+            <td><input id="price" type="text" name="price" value="@ViewBag.ePro.UnitPrice" />(VNĐ)</td>
+        </tr>
+        <tr>
+            <td>enter Units In Stock</td>
+            <td><input id="instock" type="number" name="inStock" value="@ViewBag.ePro.UnitsInStock" /></td>
+        </tr>
+
+        <tr>
+            <td>enter Product Description</td>
+            <td><input type="text" name="description" value="@ViewBag.ePro.Description" /></td>
+        </tr>
+        <tr>
+            <td>enter Photo</td>
+            <td>
+                @*<input type="file" class="form-control" name="myfile" placeholder="Enter photo">*@
+                <div class="form-group">
+                    <br />
+
+
+                    <div class="image-upload">
+                        <label for="file-input" id="thumbnail-image-label">
+                            <div class="upload-icon">
+                                <img class="icon" src="~/images/insert-image.png">
+                                <img class="prev" src="~/images/insert-image.png">
+
+                            </div>
+                        </label>
+                        <input class="form-control" id="file-input" type="file" name="myfile" onchange="loadFile(event)" />
+                        
+                        <div id="cont">
+                            <div id="rowdiv0" onchange="loadFile(event)">
+                                <span><img src="~/@ViewBag.ePro.Image" id="output0" width="200"></span>
+                                <button id="btn" onclick="del()" style="cursor: pointer;">x</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>enter Category</td>
+            <td>
+                <select name="cid">
+
+                    @foreach (Category ca in ViewBag.listCa)
+                    {
+                        <option @(ViewBag.ePro.CategoryId == ca.CategoryId ? "selected" : "") value="@ca.CategoryId">@ca.CategoryName</option>
+                    }
+
+
+                </select>
+
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="SAVE" /></td>
+        </tr>
+    </table>
+
+</form>
+
+
+@if (Model != null)
+{
+    <section class="pt-5 pb-5">
+        <div class="container">
+            <div class="row w-100">
+                <div class="col-lg-12 col-md-12 col-12">
+
+                    <p class="mb-5 text-center" style="color:blue">
+                        The product has just been uploaded
+                    </p>
+                    <table id="shoppingCart" class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="width:5%">ProductId</th>
+                                <th style="width:30%">Product</th>
+                                <th style="width:12%">Category Name</th>
+                                <th style="width:12%">Price(VNĐ)</th>
+                                <th style="width:14%">Quantity</th>
+                                <th style="width:16%">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr id="">
+                                <td>@Model.ProductId</td>
+                                <td data-th="Product">
+                                    <div class="row">
+                                        <div class="col-md-3 text-left">
+                                            <img src="~/@Model.Image" alt="" class="img-fluid d-none d-md-block rounded mb-2 shadow ">
+                                        </div>
+                                        <div class="col-md-9 text-left mt-sm-2">
+                                            <h4>@Model.ProductName</h4>
+                                            @* <p class="font-weight-light">Brand &amp; Name</p>*@
+                                        </div>
+                                    </div>
+                                </td>
+                                <td data-th="Price" id="" name="price">@Model.Category.CategoryName</td>
+
+                                <td data-th="Quantity" id="" name="quantity">
+                                    <div class="input-group">
+                                        <input id="" type="number" readonly class="form-control form-control-lg text-center" value="@Model.UnitPrice">
+
+                                    </div>
+                                </td>
+                                <td data-th="Quantity" id="" name="quantity">
+                                    <div class="input-group">
+                                        <input id="instock" type="number" readonly class="form-control form-control-lg text-center" value="@Model.UnitsInStock">
+
+                                    </div>
+                                </td>
+                                <td>@Model.Description</td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+}
+
+@section script{
+    <script>
+        $(document).ready(function () {//load first truy cập
+
+            //$("input[id='price']").val("" + 0 + "");
+            // $("input[id='instock']").val("" + 0 + "");
+            //location.href = '/Product/addNewProduct';
+        });
+
+       
+        function del() {
+            document.getElementById('cont').innerHTML = "";
+            var label = document.getElementById('thumbnail-image-label')
+            label.style = "";
+        };
+
+        var something = (function () {
+            var executed = false;
+            return function () {
+                if (!executed) {
+                    executed = true;
+                    // do something
+                    var label = document.getElementById('thumbnail-image-label')
+                    label.style = "display: none;"
+                    var del = function () {
+
+                    }
+
+                }
+            };
+        })();
+        something(); // "do something" happens
+        something();
+
+
+        var loadFile = function (event) {
+
+
+            var imgCont = document.getElementById("cont");
+            imgCont.innerHTML = "";
+            var label = document.getElementById('thumbnail-image-label')
+            label.style = "display: none;"
+
+            for (let i = 0; i < event.target.files.length; i++) {
+                var divElm = document.createElement('div');
+                divElm.id = "rowdiv" + i;
+
+
+
+                var spanElm = document.createElement('span');
+                var image = document.createElement('img');
+                image.src = URL.createObjectURL(event.target.files[i]);
+                image.id = "output" + i;
+                image.width = "200";
+
+                spanElm.appendChild(image);
+                var deleteImg = document.createElement('button');
+                deleteImg.innerHTML = "x";
+                deleteImg.style = "cursor: pointer";
+
+                deleteImg.onclick = function () {
+                    this.parentNode.remove();
+                    label.style = "";
+                    document.getElementById('file-input').value = null;
+                };
+
+                divElm.appendChild(spanElm);
+                divElm.appendChild(deleteImg);
+                imgCont.appendChild(divElm);
+            }
+        };
+    </script>
+}
+

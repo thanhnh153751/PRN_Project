@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Project_ASP.NET_ShoppingOnline.Logics;
 using Project_ASP.NET_ShoppingOnline.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,7 +26,7 @@ namespace Project_ASP.NET_ShoppingOnline.Controllers
             ViewBag.NewsProducts = newProducts;
 
             var listProductMostView = productManager.GetTopViewProducts();
-            ViewBag.TopViewProducts = listProductMostView;
+            //ViewBag.TopViewProducts = listProductMostView;
 
             string? json = HttpContext.Session.GetString("acc");
             Customer c = null;
@@ -59,6 +60,25 @@ namespace Project_ASP.NET_ShoppingOnline.Controllers
 
             return View();
         }
+
+
+        [HttpGet]
+        public JsonResult ListProductMostView()
+        {
+            try
+            {
+                ProductManager productManager = new ProductManager();
+                var listProductMostView = productManager.GetTopViewProducts();
+                return Json(new { code = 666, ProMostView = listProductMostView, msg = "successfuly" });
+            }
+            catch (Exception e)
+            {
+                return Json(new { code = 444, msg = "failure" });
+            }
+
+        }
+
+
 
         public IActionResult Home2(int id, int page = 1 ,string key = null)
         {
@@ -109,11 +129,6 @@ namespace Project_ASP.NET_ShoppingOnline.Controllers
 
             }
              
-            
-
-            
-           
-            
             
             ViewBag.OderId = OderId;
             ViewBag.sizeCart = si;

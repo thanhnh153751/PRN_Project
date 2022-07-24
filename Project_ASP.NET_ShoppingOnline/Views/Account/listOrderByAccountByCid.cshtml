@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "listOrderByAccountByCid";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Project_ASP.NET_ShoppingOnline.Models;
+@model List<Order>
+@section styles{
+    <style>
+        table {
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        tbody, td, tfoot, th, thead, tr {
+            border-width: 1px;
+        }
+
+        button a {
+            text-decoration: none;
+        }
+
+        .bill {
+            background-color: plum;
+        }
+
+        table td {
+            padding: 0 15px;
+        }
+    </style>
+}
+<h1 style="text-align: center">History Order</h1>
+
+
+<table border="1px">
+
+    <tr>
+        <th>ProductName</th>
+        <th>image</th>
+        <th>unit price</th>
+        <th>Quantity</th>
+        <th>total price</th>
+    </tr>
+    @foreach (Order order in Model)
+    {
+        <tr>
+
+            <td colspan="5" style="height: 20px;"></td>
+        </tr>
+        <tr class="bill">
+            <td>Total bill: <span class="monney">@order.Totalmoney</span></td>
+            <td colspan="4">Order Date: <span>@order.OrderDate</span></td>
+        </tr>
+
+
+        @foreach (OrdersDetail odt in ViewBag.orderDetail)
+        {
+            @if (odt.OrderId == order.OrderId)
+            {
+                <tr>
+                    <td>@odt.Product.ProductName</td>
+                    <td><img style="width: 80px;height: 60px;" src="~/@odt.Product.Image" /></td>
+                    <td class="monney">@odt.Product.UnitPrice</td>
+                    <td>@odt.Quantity</td>
+                    <td class="monney">@(odt.Quantity*odt.UnitPrice)</td>
+                </tr>
+
+            }
+
+        }
+
+
+
+
+    }
+
+
+</table>
+<br />
+<br />
+<br />
+<br />
+<br />

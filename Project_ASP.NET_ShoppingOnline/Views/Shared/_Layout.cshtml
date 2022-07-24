@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@using Project_ASP.NET_ShoppingOnline.Models;
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -37,10 +40,27 @@
             </div>
 
             <ul class="list-unstyled components">
+                @if (Context.Session.GetString("acc") != null && JsonConvert.DeserializeObject<Customer>(Context.Session.GetString("acc")).Role == 1)
+                {
+                    <li class="">
+                        <a href="#">Manager Category</a>
+                    </li>
+                    <li class="">
+                        <a href="/Product/ListProductManager">Manager Product</a>
+                    </li>
+                    <li class="">
+                        <a href="/Account/listAccountManager">Manager Customer</a>
+                    </li>
+                }
 
-                <li class="active">
-                    <a href="index.html">Home</a>
-                </li>
+                @if (Context.Session.GetString("acc") != null && JsonConvert.DeserializeObject<Customer>(Context.Session.GetString("acc")).Role == 2)
+                {
+                    <li class="">
+                        <a href="/Account/listOrderByAccountByCid/@(JsonConvert.DeserializeObject<Customer>(Context.Session.GetString("acc")).CustomerId)">History Order</a>
+                    </li>
+                }
+
+
 
 
 
@@ -80,7 +100,8 @@
                                             <a onclick="document.getElementById('search-bar').submit()"><img style="margin-right: 15px;" src="~/images/3.png" /></a>
                                         </li>
                                         </form>
-                                        @if (ViewBag.Customer == null)
+
+                                        @if (Context.Session.GetString("acc") == null)
                                         {
                                             <li class="menu_iconb">
                                                 <a href="/Account/login">Log in <img style="margin-right: 15px;" src="~/images/5.png" alt="#" /> </a>
@@ -93,7 +114,7 @@
                                                 <a href="/Account/logout" onclick="doLogout()">Log out <img style="margin-right: 15px;" src="~/images/5.png" alt="#" />  </a>
                                             </li>
                                             <li class="menu_iconb">
-                                                <a href="customer_infor">@ViewBag.Customer.Username<img style="margin-left: 15px;" src="~/images/6.png" alt="#" /></a>
+                                                <a href="customer_infor">@(JsonConvert.DeserializeObject<Customer>(Context.Session.GetString("acc")).Username)<img style="margin-left: 15px;" src="~/images/6.png" alt="#" /></a>
                                             </li>
                                         }
 
